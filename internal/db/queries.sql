@@ -1,19 +1,18 @@
--- User queries
+-- Rule: select_star
+select_star_query = "SELECT * FROM users WHERE id = 1";
 
--- Missing index on WHERE clause, SELECT *
-SELECT * FROM users WHERE email = 'test@example.com';
+-- Rule: missing_where_clause
+missing_where_clause_query = "DELETE FROM sessions";
 
--- N+1 risk: fetching orders per user in a loop
-SELECT * FROM orders WHERE user_id = 1;
+-- Rule: function_on_indexed_column
+function_on_indexed_column_query = "SELECT id FROM products WHERE CAST(price AS TEXT) = '99.99'";
 
--- No LIMIT on large table scan
-SELECT * FROM audit_logs WHERE created_at > '2024-01-01';
+-- Rule: join_without_condition
+join_without_condition_query = "SELECT u.name, o.total FROM users u, orders o";
 
--- Implicit type cast, missing index hint
-SELECT id, name FROM products WHERE CAST(price AS TEXT) = '99.99';
+-- Rule: n_plus_one_pattern
+n_plus_one_pattern_query = "SELECT id, (SELECT COUNT(*) FROM orders o WHERE o.user_id = u.id) AS order_count FROM users u";
 
--- Cartesian join (missing JOIN condition)
-SELECT u.name, o.total FROM users u, orders o;
+-- Rule: destructive_ddl
+destructive_ddl_query = "DROP TABLE audit_logs";
 
--- Non-SARGable: function on indexed column
-SELECT * FROM sessions WHERE DATE(created_at) = '2024-03-01';
