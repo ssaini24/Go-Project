@@ -15,4 +15,3 @@ n_plus_one_pattern_query = "SELECT id, (SELECT COUNT(*) FROM orders o WHERE o.us
 
 -- Rule: destructive_ddl
 destructive_ddl_query = "DROP TABLE audit_logs";
-
